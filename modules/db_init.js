@@ -1,6 +1,8 @@
 const chalk = require('chalk');
 const DB = require("./db_connect.js").code;
 const ConfigDB = require("../models/config.js");
+const UserDB = require("../models/account.js");
+const { User } = require('@androz2091/insta.js');
 
 module.exports = {
     m_name: "Initalization of the DB",
@@ -9,7 +11,7 @@ module.exports = {
             return console.error(`${chalk.green("[MONGODB]")} ${chalk.red("[ERROR]")} The DB is not connected yet!`);
         }
 
-        console.log(`${chalk.green("[MONGODB]")} Starting initialization...`);
+        console.log(`${chalk.green("[MONGODB]")} Starting DB initialization...`);
 
         var models = DB.connectionObj.mongoose.models;
         var configModelTest = models.config;
@@ -42,6 +44,16 @@ module.exports = {
                     console.error(`${chalk.green("[MONGODB]")} Failed to create password field in config tab`)
                 }
             });
+        }
+
+        if ((await UserDB.model.find({})).length == 0) {
+            new UserDB.model({
+                username: "admin",
+                password: "admin",
+                rank: "admin"
+            }).save().then(() => {
+                console.log(`${chalk.green("[MONGODB]")} ${chalk.green("[+]")} Created first account ${chalk.bold("(user: admin, password: admin)")} with admin rights.`)
+            })
         }
 
         console.log(`${chalk.green("[MONGODB]")} DataBase initialization completed!`)

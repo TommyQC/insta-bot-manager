@@ -34,9 +34,9 @@ module.exports = {
         ));
         
         // catches uncaught exceptions
-        process.on('uncaughtException', exitHandler.bind(null, {
-                exit:true
-            }
-        ));
+        process.on('uncaughtException', (error) => {
+            console.log(`${chalk.red("[ERROR]")} An error occured`)
+            return console.error(error)
+        });
     }
 }
