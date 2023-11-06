@@ -1,2 +1,2 @@
 # insta-bot-manager
- A website made to manage your instagram bot
+ A website using Node.JS and ExpressJS to manage your instagram bot.
