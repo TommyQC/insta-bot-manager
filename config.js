@@ -8,9 +8,10 @@
 module.exports = {
     website: {
         port: 80,
-        host: "localhost"
+        host: "localhost",
+        db_link: "",
+        logRequests: false
     },
-    
     bot: {
         token: ""
     }
