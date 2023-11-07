@@ -7,7 +7,7 @@ module.exports = {
             if (options.exit) {
                 process.exit();
             }
-            return console.log(`${chalk.yellow(`[WARNING]`)} Exiting program...`);
+            return console.log(`${chalk.warning(`[WARNING]`)} Exiting program...`);
         }
         
         // do something when app is closing

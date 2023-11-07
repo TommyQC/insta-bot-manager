@@ -10,6 +10,9 @@ var app = express();
 const DB = require("./modules/db_connect.js").code;
 const config = require("./models/config.js");
 const chalk = require("chalk");
+require("./modules/console_logger.js").code();
+
+chalk.warning = chalk.rgb(240, 157, 34);
 
 async function initialize () {
     await DB.connect();
@@ -49,5 +52,5 @@ process.on('uncaughtException', function (err) {
 });
 
 server.on('close', function() {
-    console.log(`${chalk.blueBright("[SERVER]")} ${chalk.bgRed(`Server stopped listening to ${chalk.bold(`http://${mainConfig.website.host}:${mainConfig.website.port}`)}`)}`);
+    console.log(`${chalk.blueBright("[SERVER] ") + chalk.warning(`[WARNING]`)} ${chalk.bgRed(`Server stopped listening to ${chalk.bold(`http://${mainConfig.website.host}:${mainConfig.website.port}`)}`)}`);
 });
