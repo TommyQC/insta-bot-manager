@@ -9,7 +9,7 @@ module.exports = {
     name: "Initalization of the DB",
     code: async () => {
         if (DB.connectionObj == null) {
-            return console.log(`${chalk.green("[MONGODB]")} ${chalk.red("X")} The DB is not connected yet!`);
+            return console.log(`${chalk.green("[MONGODB]")} ${chalk.red("[ERROR]")} The DB is not connected yet!`);
         }
 
         initFinished = false;
