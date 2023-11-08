@@ -1,0 +1,89 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Modernize Free</title>
+    <link rel="shortcut icon" type="image/png" href="/assets/images/logos/favicon.png" />
+    <link rel="stylesheet" href="/assets/css/styles.css" />
+</head>
+
+<body>
+    <!--  Body Wrapper -->
+    <div class="page-wrapper" id="main-wrapper" data-layout="vertical" data-navbarbg="skin6" data-sidebartype="full" data-sidebar-position="fixed" data-header-position="fixed">
+        <div class="position-relative overflow-hidden radial-gradient min-vh-100 d-flex align-items-center justify-content-center">
+            <div class="d-flex align-items-center justify-content-center w-100">
+                <div class="row justify-content-center w-100">
+                    <div class="col-md-8 col-lg-6 col-xxl-3">
+                        <div class="card mb-0">
+                            <div class="card-body">
+                                <a href="./index.html" class="text-nowrap logo-img text-center d-block py-3 w-100">
+                                    <img src="/assets/img/logo-long2.png" width="180" alt="">
+                                </a>
+                                <p class="text-center">The best way to manage your Instagram Bot</p>
+                                <% Object.keys(result.errors).filter((key) => key == "ALERT").forEach((key) => { %>
+                                    <div class="alert alert-danger" role="alert">
+                                        <strong>Error - </strong> <%=result.errors[key]%>
+                                    </div>
+                                <% }); %>
+
+                                <form action="" method="post">
+                                    <div class="mb-3">
+                                        <label for="usernameInput" class="form-label">Username</label>
+                                        <input type="text" class="form-control" id="usernameInput" name="userInput">
+                                    </div>
+                                    <div class="mb-4">
+                                        <label for="passwordInput" class="form-label">Password</label>
+                                        <input type="password" class="form-control" id="passwordInput" name="passInput">
+                                    </div>
+                                    <button type="submit" class="btn btn-primary w-100 py-8 fs-4 mb-4 rounded-2">Sign In</button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="/assets/libs/jquery/dist/jquery.min.js"></script>
+    <script src="/assets/libs/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="/assets/libs/toastr/toastr-init.js"></script>
+
+    <% for (const [key, value] of Object.entries(errors)) { %>
+        <script>
+            $("#<%=key%>").addClass("is-invalid");
+            $("#<%=key%>").after(`<div class="invalid-feedback" id="<%=key%>-invalid>"><%=value%></div>`)
+            $("#<%=key%>").on("input", function(){
+                $("#<%=key%>").removeClass("is-invalid");
+                $("#<%=key%>-invalid>").remove();
+            });
+        </script>
+    <% }
+
+    for (const [key, value] of Object.entries(result.errors)) { %>
+        <script>
+            $("#<%=key%>").addClass("is-invalid");
+            $("#<%=key%>").after(`<div class="invalid-feedback" id="<%=key%>-invalid>"><%=value%></div>`)
+            $("#<%=key%>").on("input", function(){
+                $("#<%=key%>").removeClass("is-invalid");
+                $("#<%=key%>-invalid>").remove();
+            });
+        </script>
+    <% }
+    
+    for (const [key, value] of Object.entries(values)) { %>
+        <script>
+            $("#<%=key%>").val("<%=value%>");
+        </script>
+    <% } %>
+    
+    <% if (result.response == "success") { %>
+        <script>
+            toastr["success"]("You have been logged in to your account!", "Success")
+        </script>        
+    <% } %>
+</body>
+
+</html>

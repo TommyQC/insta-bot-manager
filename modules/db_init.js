@@ -3,6 +3,8 @@ const DB = require("./db_connect.js").code;
 const ConfigDB = require("../models/config.js");
 const UserDB = require("../models/account.js");
 const { User } = require('@androz2091/insta.js');
+const bcrypt = require("bcryptjs")
+const authAPI = require("./auth.js");
 const delay = ms => new Promise(resolve => setTimeout(resolve, ms))
 
 module.exports = {
@@ -76,19 +78,9 @@ module.exports = {
         }
 
         if ((await UserDB.model.find({})).length == 0) {
-            new UserDB.model({
-                username: "admin",
-                password: "admin",
-                rank: "admin"
-            }).save().then(() => {
-                console.log(`${chalk.green.bold("[MONGODB] +")} Created first account ${chalk.bold("(user: admin, password: admin)")} with admin rights.`)
-            })
+            await authAPI.create(username = "admin", password = "admin", rank = "admin");
         }
 
         initFinished = true;
-
-        async function endActions(line) {
-            console.log(line)
-        }
     }
 }

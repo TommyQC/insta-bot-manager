@@ -6,15 +6,19 @@ const { Schema, model } = require("mongoose");
 // We declare new schema.
 const userSchema = new Schema({
     username: {
-        type: String
+        type: String,
+        required: true
     },
 
     password: {
-        type: String
+        type: String,
+        required: true
     },
 
     rank: {
-        type: String
+        type: String,
+        default: "user",
+        required: true
     }
 });
 
