@@ -3,24 +3,22 @@ const chalk = require("chalk");
 module.exports = {
     name: "Catch console events and log it",
     code: () => {
-        const realLog = console.log;
-        const realClear = console.clear;
-        const realErr = console.error;
+        const realConsole = console;
         logs = [];
         errors = [];
         console.log = function() {
             logs.push([].slice.call(arguments))
-            return realLog.apply(console, arguments);
+            return realConsole.log.apply(console, arguments);
         }
 
         console.error = function() {
             errors.push([].slice.call(arguments))
-            return realErr.apply(console, arguments);
+            return realConsole.error.apply(console, arguments);
         }
 
         console.clear = function() {
             logs = [];
-            realClear.apply(console);
+            realConsole.clear.apply(console);
             setTimeout(() => {
                 if (errors.length != 0) {
                     console.info(`${chalk.red("[ERROR]")} Some errors occured: `)
