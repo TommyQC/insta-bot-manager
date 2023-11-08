@@ -6,7 +6,7 @@ const { User } = require('@androz2091/insta.js');
 const delay = ms => new Promise(resolve => setTimeout(resolve, ms))
 
 module.exports = {
-    m_name: "Initalization of the DB",
+    name: "Initalization of the DB",
     code: async () => {
         if (DB.connectionObj == null) {
             return console.log(`${chalk.green("[MONGODB]")} ${chalk.red("X")} The DB is not connected yet!`);

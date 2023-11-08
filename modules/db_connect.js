@@ -3,7 +3,7 @@ const mongoose = require('mongoose');
 const config = require("../config.js");
 
 module.exports = {
-    m_name: "Databse connection",
+    name: "Databse connection",
     code: class {
         constructor() {
         }
