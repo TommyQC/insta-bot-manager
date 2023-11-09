@@ -1,20 +1,14 @@
 process.stdin.resume();
 console.clear();
 
-//require("./modules/exit_handler.js").code();
 require("./modules/console_logger.js").code();
 var mainConfig = require("./config.js");
-const mongoose = require("mongoose");
 const express = require('express'); 
 var app = express();
-const DB = require("./modules/db_connect.js").code;
-const config = require("./models/config.js");
 const bodyParser = require("body-parser");
 const chalk = require("chalk");
-//const authAPI = require("./modules/auth.js");
-const fs = require("fs");
-const path = require("path");
 const cookieParser = require("cookie-parser");
+const RanksDB = require("./models/ranks.js");
 
 chalk.warning = chalk.rgb(240, 157, 34);
 chalk.modules = chalk.rgb(217, 132, 82);
@@ -32,7 +26,6 @@ app.set('view engine', 'ejs');
 var server = app.listen(mainConfig.website.port, async function () { 
     await console.log(`${chalk.blueBright("[SERVER]")} Server listening to ${chalk.bold(`http://${mainConfig.website.host}:${mainConfig.website.port}`)}`);
 });
-
 
 
 app.get('/', async (req, res) => {
@@ -58,17 +51,18 @@ app.get('/1', (req, res) => {
 }); 
 
 const jwt = require("jsonwebtoken");
-const { error } = require("console");
 
 app.get('/login', async (req, res) => {
     var errors = {};
-    await jwt.verify(req.cookies.jwt, mainConfig.website.jwtSecret, (err, decodedToken) => {
+    await jwt.verify(req.cookies.jwt, mainConfig.website.jwtSecret, async (err, decodedToken) => {
         if (typeof decodedToken == "undefined" || decodedToken == null) {
             console.log("User is not logged in")
             console.log("type : " + typeof decodedToken)
         }else if (typeof decodedToken == "object"){
             console.log("type : " + typeof decodedToken)
             console.log("Not undefined")
+            var rankObj = await RanksDB.find({ name: decodedToken.rank });
+            decodedToken.rank = rankObj[0];
         }else{
             errors["ALERT"] = "Something wrong occured"
         }
@@ -81,6 +75,8 @@ app.get('/login', async (req, res) => {
 });
 
 app.post('/login', async (req, res) => {
+    authAPI = app.modules["auth.js"];
+
     app.emit("newReq", req)
     console.log("Just got post request")
 
@@ -105,7 +101,7 @@ app.post('/login', async (req, res) => {
   
 
 process.on('uncaughtException', function (err) {
-    console.error(err);
+    mainConfig.website.logErrors ? console.error(err) : "";
 });
 
 server.on('close', function() {

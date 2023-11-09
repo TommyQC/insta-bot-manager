@@ -4,8 +4,8 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Modernize Free</title>
-    <link rel="shortcut icon" type="image/png" href="/assets/images/logos/favicon.png" />
+    <title>IGBM | Login</title>
+    <link rel="shortcut icon" type="image/png" href="/assets/img/logo1.png" />
     <link rel="stylesheet" href="/assets/css/styles.css" />
 </head>
 
@@ -18,9 +18,26 @@
             <div class="d-flex align-items-center justify-content-center w-100">
                 <div class="row justify-content-center w-100">
                     <div class="col-md-8 col-lg-6 col-xxl-3">
+
+                        <% if (req.user) { %>
+                            <% console.log(req.user) %>
+                            <div class="alert alert-outline-secondary bg-secondary-subtle bg-secondary-subtle text-secondary" role="alert">
+                                <h4 class="alert-heading">Alert!</h4>
+                                <p>You are already logged into an account.</p>
+                                <hr>
+                                <div class="d-flex align-items-center py-0 mx-3 border-bottom">
+                                    <img src="<%=req.user.img%>" class="rounded-circle" width="45" height="45" alt="">
+                                    <div class="ms-3">
+                                        <h5 class="mb-0 fs-3"><%=req.user.username%></h5>
+                                        <span class="mb-0 d-block <%=req.user.rank.style%>"><%=req.user.rank.displayName%></span>
+                                    </div>
+                                </div>
+                            </div>
+                        <% } %>
+
                         <div class="card mb-0">
                             <div class="card-body">
-                                <a href="./index.html" class="text-nowrap logo-img text-center d-block py-3 w-100">
+                                <a href="./login" class="text-nowrap logo-img text-center d-block py-3 w-100">
                                     <img src="/assets/img/logo-long2.png" width="180" alt="">
                                 </a>
                                 <p class="text-center">The best way to manage your Instagram Bot</p>

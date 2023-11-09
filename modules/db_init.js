@@ -2,6 +2,7 @@ const chalk = require('chalk');
 const DB = require("./db_connect.js").code;
 const ConfigDB = require("../models/config.js");
 const UserDB = require("../models/account.js");
+const RanksDB = require("../models/ranks.js");
 const { User } = require('@androz2091/insta.js');
 const bcrypt = require("bcryptjs")
 const authAPI = require("./auth.js");
@@ -78,6 +79,34 @@ module.exports = {
                     console.log(`${chalk.green("[MONGODB]")} Failed to create password field in config tab`)
                 }
             });
+        }
+
+        if (!await RanksDB.exists({ name: "admin" })) {
+            await RanksDB.create({
+                name: "admin",
+                displayName: "Administrator",
+                style: "text-danger",
+                permissions: "ALL"
+            }).then(() => {
+                console.log(`${chalk.green("[MONGODB] +")} Created default admin rank in collection ${chalk.bold("ranks")}`);
+            }).catch((error) => {
+                console.log(`${chalk.green("[MONGODB]")} ${chalk.red("[ERROR]")} Failed to create admin rank in database.`);
+                config.website.logErrors ? console.error(error) : "";
+            })
+        }
+
+        if (!await RanksDB.exists({ name: "user" })) {
+            await RanksDB.create({
+                name: "user",
+                displayName: "User",
+                style: "text-success",
+                permissions: "NONE"
+            }).then(() => {
+                console.log(`${chalk.green("[MONGODB] +")} Created default user rank in collection ${chalk.bold("ranks")}`);
+            }).catch((error) => {
+                console.log(`${chalk.green("[MONGODB]")} ${chalk.red("[ERROR]")} Failed to create user rank in database.`);
+                config.website.logErrors ? console.error(error) : "";
+            })
         }
 
         if ((await UserDB.model.find({})).length == 0) {

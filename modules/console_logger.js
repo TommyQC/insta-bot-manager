@@ -10,7 +10,11 @@ module.exports = {
         logs = [];
         errors = [];
         console.log = function() {
-            logs.push([].slice.call(arguments))
+            if (arguments[0]) {
+                logs.push([].slice.call(arguments))
+            }else{
+                arguments[0] = undefined;
+            }
             return realLog.apply(console, arguments);
         }
 
