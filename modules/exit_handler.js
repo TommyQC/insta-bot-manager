@@ -1,6 +1,7 @@
 const chalk = require("chalk");
 
 module.exports = {
+    priority: 1,
     name: "Handler when application is closing",
     code: () => {
         function exitHandler(options, exitCode) {

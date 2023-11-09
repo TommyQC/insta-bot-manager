@@ -3,6 +3,7 @@ const path = require("path");
 const chalk = require("chalk");
 
 module.exports = {
+    priority: 3,
     name: "Configuration file initalizer",
     code: () => {
         fs.stat(path.join(__dirname, '..', 'config.js'), async function(err, stat) {

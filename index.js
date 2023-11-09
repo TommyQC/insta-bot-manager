@@ -1,8 +1,8 @@
 process.stdin.resume();
 console.clear();
 
-require("./modules/exit_handler.js").code();
-
+//require("./modules/exit_handler.js").code();
+require("./modules/console_logger.js").code();
 var mainConfig = require("./config.js");
 const mongoose = require("mongoose");
 const express = require('express'); 
@@ -11,26 +11,17 @@ const DB = require("./modules/db_connect.js").code;
 const config = require("./models/config.js");
 const bodyParser = require("body-parser");
 const chalk = require("chalk");
-const authAPI = require("./modules/auth.js");
+//const authAPI = require("./modules/auth.js");
+const fs = require("fs");
+const path = require("path");
 const cookieParser = require("cookie-parser");
-require("./modules/console_logger.js").code();
 
 chalk.warning = chalk.rgb(240, 157, 34);
+chalk.modules = chalk.rgb(217, 132, 82);
 
-async function initialize () {
-    await DB.connect();
-    
-    require("./modules/db_init.js").code()
-    require("./modules/web_logreq.js").code(app);
+//require("./modules/config_init.js").code();
 
-    if (DB.connectionObj == undefined) {
-        process.exit(1)
-    }
-}
-
-initialize();
-
-require("./modules/config_init.js").code();
+require("./modules/init.js")(app);
 
 app.use(express.static(__dirname + '/views'));
 app.use( bodyParser.json() );                           // to support JSON-encoded bodies
@@ -38,17 +29,19 @@ app.use(bodyParser.urlencoded({ extended: true }));     // to support URL-encode
 app.use(cookieParser());
 app.set('view engine', 'ejs');
 
-var server = app.listen(mainConfig.website.port, function () { 
-    console.log(`${chalk.blueBright("[SERVER]")} Server listening to ${chalk.bold(`http://${mainConfig.website.host}:${mainConfig.website.port}`)}`);
+var server = app.listen(mainConfig.website.port, async function () { 
+    await console.log(`${chalk.blueBright("[SERVER]")} Server listening to ${chalk.bold(`http://${mainConfig.website.host}:${mainConfig.website.port}`)}`);
 });
 
-app.get('/', (req, res) => {
+
+
+app.get('/', async (req, res) => {
     app.emit("newReq", req)
 
     let data = { 
         name: 'Akashdeep', 
         hobbies: ['playing football', 'playing chess', 'cycling'] 
-    } 
+    }
   
     res.render('dashboard', { data: data }); 
 }); 
@@ -64,11 +57,27 @@ app.get('/1', (req, res) => {
     res.render('modernize', { data: data }); 
 }); 
 
+const jwt = require("jsonwebtoken");
+const { error } = require("console");
 
-app.get('/login', (req, res) => {
+app.get('/login', async (req, res) => {
+    var errors = {};
+    await jwt.verify(req.cookies.jwt, mainConfig.website.jwtSecret, (err, decodedToken) => {
+        if (typeof decodedToken == "undefined" || decodedToken == null) {
+            console.log("User is not logged in")
+            console.log("type : " + typeof decodedToken)
+        }else if (typeof decodedToken == "object"){
+            console.log("type : " + typeof decodedToken)
+            console.log("Not undefined")
+        }else{
+            errors["ALERT"] = "Something wrong occured"
+        }
+        req.user = decodedToken;
+    })
+
     app.emit("newReq", req)
 
-    res.render('login', { req, res, errors, values: {}, result: {errors:{}} });
+    res.render('login', { req, res, errors, values: {}, result: {errors:errors} });
 });
 
 app.post('/login', async (req, res) => {

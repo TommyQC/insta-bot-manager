@@ -3,11 +3,13 @@ const mongoose = require('mongoose');
 const config = require("../config.js");
 
 module.exports = {
+    priority: 1,
     name: "Databse connection",
     code: class {
         constructor() {
+            
         }
-    
+
         static async connect() {
             try {
                 if (config.website.db_link == "") {

@@ -19,6 +19,12 @@ const userSchema = new Schema({
         type: String,
         default: "user",
         required: true
+    },
+
+    picture: {
+        type: String,
+        default: `/assets/images/profile/user-${Math.floor(Math.random() * (5 - 1 + 1) + 1)}.jpg`,
+        required: false
     }
 });
 

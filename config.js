@@ -10,7 +10,8 @@
     -   .host: The host of your web server                                                          TYPE: String
     -   .db_link: The connection link to the MongoDB database (including DB in the link)            TYPE: String
     -   .jwtSecret: Secret token used to authenticate users, generate one with                      TYPE: String
-            this code: require("crypto").randomBytes(35).toString("hex")                           
+            this code: node
+            require("crypto").randomBytes(35).toString("hex")                           
     -   .logRequests: Detailed log of every request made to the WS                                  TYPE: Boolean
     -   .logErrors: Give full details of an error when it occurs                                    TYPE: Boolean
 */

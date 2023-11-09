@@ -6,6 +6,7 @@ const jwt = require('jsonwebtoken')
 const jwtSecret = config.website.jwtSecret;
 
 module.exports = {
+    priority: 9,
     name: "Authentification module",
     login: async (username, password, ids, res) => {
         var errors = {};
@@ -17,7 +18,7 @@ module.exports = {
             try {
                 const user = await UserDB.model.findOne({ username });
                 if (!user) {
-                    errors[ids[0]] = "User was not found.";
+                    errors[ids[0]] = "This username was not found";
                 }else{
                     await bcrypt.compare(password, user.password).then(async (result) => {
                         if (result == false) {
@@ -25,10 +26,15 @@ module.exports = {
                         }else{
                             const maxAge = 3 * 60 * 60;
                             const token = jwt.sign(
-                                { id: user._id, username, role: user.role },
+                                { 
+                                    id: user._id, 
+                                    username, 
+                                    rank: user.rank,
+                                    img: user.picture
+                                },
                                 jwtSecret,
                                 {
-                                expiresIn: maxAge, // 3hrs in sec
+                                    expiresIn: maxAge, // 3hrs in sec
                                 }
                             );
                             res.cookie("jwt", token, {

@@ -1,6 +1,7 @@
 const chalk = require("chalk");
 
 module.exports = {
+    priority: 5,
     name: "Log web requests function",
     code: (app) => {
         app.on('newReq', function (req) {

@@ -8,9 +8,10 @@ const authAPI = require("./auth.js");
 const delay = ms => new Promise(resolve => setTimeout(resolve, ms))
 
 module.exports = {
+    priority: 3,
     name: "Initalization of the DB",
     code: async () => {
-        if (DB.connectionObj == null) {
+        if (await DB.connectionObj == null) {
             return console.log(`${chalk.green("[MONGODB]")} ${chalk.red("[ERROR]")} The DB is not connected yet!`);
         }
 
@@ -42,8 +43,10 @@ module.exports = {
 
             if (initFinished == true) {
                 clearInterval(initDBInter);
-                writeLog(console.getLogs().filter((element) => console.getLogs()[dbInitKey][0] !== element[0]))
-                console.log(`${chalk.green("[MONGODB] ✓")} DB initialization completed and ready to use!`)
+                //writeLog(console.getLogs().filter((element) => console.getLogs()[dbInitKey][0] !== element[0]))
+                currentLogs = console.getLogs()
+                currentLogs[dbInitKey][0] = `${chalk.green("[MONGODB] ✓")} DB initialization completed and ready to use!`
+                writeLog(currentLogs)
             }
         }, 500);
 
@@ -70,7 +73,7 @@ module.exports = {
                 value: ""
             }).save().then(newDoc => {
                 if (newDoc => ConfigDB) {
-                    console.log(`${chalk.green.bold("[MONGODB] [+]")} Created password field in config tab`)
+                    console.log(`${chalk.green.bold("[MONGODB] +")} Created password field in config tab`)
                 } else {
                     console.log(`${chalk.green("[MONGODB]")} Failed to create password field in config tab`)
                 }

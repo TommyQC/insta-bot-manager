@@ -1,6 +1,7 @@
 const chalk = require("chalk");
 
 module.exports = {
+    priority: 0,
     name: "Catch console events and log it",
     code: () => {
         const realLog = console.log;
