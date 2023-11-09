@@ -56,11 +56,11 @@ app.get('/login', async (req, res) => {
     var errors = {};
     await jwt.verify(req.cookies.jwt, mainConfig.website.jwtSecret, async (err, decodedToken) => {
         if (typeof decodedToken == "undefined" || decodedToken == null) {
-            console.log("User is not logged in")
-            console.log("type : " + typeof decodedToken)
+            /*console.log("User is not logged in")
+            console.log("type : " + typeof decodedToken)*/
         }else if (typeof decodedToken == "object"){
-            console.log("type : " + typeof decodedToken)
-            console.log("Not undefined")
+            /*console.log("type : " + typeof decodedToken)
+            console.log("Not undefined")*/
             var rankObj = await RanksDB.find({ name: decodedToken.rank });
             decodedToken.rank = rankObj[0];
         }else{
