@@ -41,5 +41,17 @@ module.exports = {
         console.getLogs = function() {
             return logs;
         }
+
+        console.mongodb = function(arguments, isError = false, plus = false) {
+            return console.log(`${chalk.green("[MONGODB]")}${isError === true ? chalk.red(" [ERROR]") : ``}${plus === true ? chalk.green(" +") : ``} ${arguments}`)
+        }
+
+        console.config = function(arguments, isError = false) {
+            return console.log(`${chalk.config("[CONFIG]")}${isError === true ? chalk.red(" [ERROR]") : ``} ${arguments}`);
+        }
+
+        console.jump = function() {
+            return console.log(` `);
+        }
     }
 }

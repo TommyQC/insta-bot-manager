@@ -9,8 +9,10 @@ const bodyParser = require("body-parser");
 const chalk = require("chalk");
 const cookieParser = require("cookie-parser");
 const RanksDB = require("./models/ranks.js");
+const UserDB = require("./models/account.js");
 
 chalk.warning = chalk.rgb(240, 157, 34);
+chalk.config = chalk.rgb(66, 117, 85);
 chalk.modules = chalk.rgb(217, 132, 82);
 
 //require("./modules/config_init.js").code();
@@ -26,7 +28,6 @@ app.set('view engine', 'ejs');
 var server = app.listen(mainConfig.website.port, async function () { 
     await console.log(`${chalk.blueBright("[SERVER]")} Server listening to ${chalk.bold(`http://${mainConfig.website.host}:${mainConfig.website.port}`)}`);
 });
-
 
 app.get('/', async (req, res) => {
     app.emit("newReq", req)

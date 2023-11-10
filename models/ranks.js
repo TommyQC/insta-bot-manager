@@ -21,13 +21,6 @@ const ranksSchema = new Schema({
     }
 });
 
-model("ranks", ranksSchema).watch().on('change', async(data) => {
-    if (data.operationType === "drop") {
-        console.log(`${chalk.green(`[MONGODB]`)} ${chalk.warning(`[WARNING]`)} A drop action has been detected on collection ${chalk.underline(data.ns.coll)}. Reloading database...`);
-        delete require.cache[require.resolve(`../modules/db_init.js`)];
-        require(`../modules/db_init.js`).code();
-    }
-});
 
 // We export it as a mongoose model.
 module.exports = model("ranks", ranksSchema);
