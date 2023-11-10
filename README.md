@@ -7,6 +7,10 @@ Instagram Bot Manager (IGBM) is a open-source project that will allow you to man
 - 🎈 **Simple** :  This project is simple to use, and simple to manage
 - ***and much more coming soon...***
 
+## Set-up guide
+- *coming soon*
+
+
 
 ## Contribution
 [![Contributor](https://img.shields.io/github/contributors/TommyQC/insta-bot-manager?style=flat-square)](https://github.com/TommyQC/insta-bot-manager/contributors) [![Issues](https://img.shields.io/github/issues/TommyQC/insta-bot-manager?style=flat-square)](https://github.com/TommyQC/insta-bot-manager/issues)<br>
