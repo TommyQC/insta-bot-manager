@@ -40,20 +40,37 @@ app.get('/', async (req, res) => {
     res.render('dashboard', { data: data }); 
 }); 
 
-app.get('/1', (req, res) => {
+app.get('/dashboard', async (req, res) => {
     app.emit("newReq", req)
+    authAPI = app.modules["auth.js"];
 
-    let data = { 
-        name: 'Akashdeep', 
-        hobbies: ['playing football', 'playing chess', 'cycling'] 
-    } 
+    if (req.cookies.jwt == null || req.cookies.jwt == "") {
+        res.redirect("/login");
+    }
+
+    var UserToken = await authAPI.checkToken(req.cookies.jwt);
+    if (typeof UserToken == "object") {
+        var rankObj = await RanksDB.find({ name: UserToken.rank });
+        UserToken.rank = rankObj[0];
+    }
+    req.user = UserToken;
+    req.currentPage = "dashboard";
   
-    res.render('modernize', { data: data }); 
+    res.render('modernize', { req }); 
 }); 
+
+app.post("/logout", async (req, res) => { 
+    app.emit("newReq", req)
+    authAPI = app.modules["auth.js"];
+
+    await authAPI.logout(res);
+    res.redirect("/login");
+});
 
 const jwt = require("jsonwebtoken");
 
 app.get('/login', async (req, res) => {
+
     var errors = {};
     await jwt.verify(req.cookies.jwt, mainConfig.website.jwtSecret, async (err, decodedToken) => {
         if (typeof decodedToken == "undefined" || decodedToken == null) {
