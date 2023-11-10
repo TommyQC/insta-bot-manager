@@ -17,7 +17,8 @@ const ranksSchema = new Schema({
     },
 
     permissions: {
-        type: String
+        type: [String],
+        default: ["NONE"]
     }
 });
 
