@@ -3,6 +3,7 @@ const DB = require("./db_connect.js").code;
 const ConfigDB = require("../models/config.js");
 const UserDB = require("../models/account.js");
 const RanksDB = require("../models/ranks.js");
+const PermissionsDB = require("../models/permissions.js");
 const bcrypt = require("bcryptjs")
 const authAPI = require("./auth.js");
 const delay = ms => new Promise(resolve => setTimeout(resolve, ms))
@@ -55,12 +56,13 @@ module.exports = {
         await module.exports.initModel(await RanksDB);
         await module.exports.initModel(await UserDB.model);
         await module.exports.initModel(await ConfigDB);
+        await module.exports.initModel(await PermissionsDB);
 
         initFinished = true;
 
         // Make sure the models are not being dropped.
         if (module.exports.hasInitialized === false) {
-            await module.exports.watchModels([require("../models/config.js"), require("../models/account.js").model, require("../models/ranks.js")]).then(() => {
+            await module.exports.watchModels([require("../models/config.js"), require("../models/account.js").model, require("../models/ranks.js"), require("../models/permissions.js")]).then(() => {
                 module.exports.hasInitialized = true;
             });
         }
@@ -76,7 +78,7 @@ module.exports = {
                         name: "admin",
                         displayName: "Administrator",
                         style: "text-danger",
-                        permissions: "ALL"
+                        permissions: ["ALL"]
                     }, async (document) => {
                         console.mongodb(`Created default admin rank in collection ${chalk.bold("ranks")}`, false, true)
                     }, async (error) => {
@@ -90,11 +92,44 @@ module.exports = {
                         name: "user",
                         displayName: "User",
                         style: "text-success",
-                        permissions: "NONE"
+                        permissions: ["NONE"]
                     }, async (document) => {
                         console.mongodb(`Created default user rank in collection ${chalk.bold("ranks")}`, false, true)
                     }, async (error) => {
                         console.mongodb(`Failed to create user rank in database.`, true)
+                        config.website.logErrors ? console.error(error) : "";
+                    })
+                }
+            }    
+        }
+
+        // Initialize permissions collection
+        if (model.modelName === "permissions") {
+            if (!await model.exists({ name: "ALL" }) || !await model.exists({ name: "NONE" })) {
+                console.mongodb(`Missing elements in ${chalk.bold.underline("permissions")} collection`)
+    
+                if (!await model.exists({ name: "ALL" })) {
+                    module.exports.createNew(model, {
+                        name: "ALL",
+                        displayName: "All",
+                        description: "This permission grants access to every permissions",
+                    }, async (document) => {
+                        console.mongodb(`Created default ALL permission in collection ${chalk.bold("permissions")}`, false, true)
+                    }, async (error) => {
+                        console.mongodb(`Failed to create ALL permission in database.`, true)
+                        config.website.logErrors ? console.error(error) : "";
+                    })
+                } 
+    
+                if (!await model.exists({ name: "NONE" })) {
+                    module.exports.createNew(model, {
+                        name: "NONE",
+                        displayName: "None",
+                        description: "This permission grants access to no permissions",
+                    }, async (document) => {
+                        console.mongodb(`Created default NONE permission in collection ${chalk.bold("permissions")}`, false, true)
+                    }, async (error) => {
+                        console.mongodb(`Failed to create NONE permission in database.`, true)
                         config.website.logErrors ? console.error(error) : "";
                     })
                 }
