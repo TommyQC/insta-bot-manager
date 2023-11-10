@@ -1,6 +1,7 @@
 const bcrypt = require("bcryptjs")
 const config = require("../config.js")
 const UserDB = require("../models/account.js");
+const RanksDB = require("../models/ranks.js");
 const chalk = require("chalk")
 const jwt = require('jsonwebtoken')
 const jwtSecret = config.website.jwtSecret;
@@ -62,6 +63,10 @@ module.exports = {
         inputForm.errors = await errors;
         return await inputForm;
     },
+    logout: async (res) => {
+        res.cookie("jwt", "", { maxAge: 1 });
+        console.log(`${chalk.magenta("[REQUEST]")} Successfull logout request.`)
+    },
     create: async(username, password, rank) => {
         bcrypt.hash(password, 10).then(async (hash) => {
             await UserDB.model.create({
@@ -78,5 +83,22 @@ module.exports = {
             console.log(`${chalk.red("[ENCRYPTION]")} Password failed to hash, aborted account creation.`);
             config.website.logErrors ? console.error(error) : "";
         });
+    },
+    checkToken: async(cookie) => {
+        return await jwt.verify(cookie, config.website.jwtSecret);
+        /*await jwt.verify(cookie, config.website.jwtSecret, async (err, decodedToken) => {
+            if (typeof decodedToken == "undefined" || decodedToken == null) {
+                /*console.log("User is not logged in")
+                console.log("type : " + typeof decodedToken)
+            }else if (typeof decodedToken == "object"){
+                /*console.log("type : " + typeof decodedToken)
+                console.log("Not undefined")
+                var rankObj = await RanksDB.find({ name: decodedToken.rank });
+                decodedToken.rank = rankObj[0];
+            }else{
+                return "Something wrong occured";
+            }
+            return await decodedToken;
+        })*/
     }
 }
