@@ -2,7 +2,7 @@
 > **THIS PROJECT IS STILL IN IT'S EARLY DEV PHASE**
 
 # Ingstagram Bot Manager
-Instagram Bot Manager (IGBM) is a open-source project that will allow you to manage your instagram bot using [MongoDB](https://www.mongodb.com/)[^1] and [Node.JS](https://nodejs.org/)[^2]
+Instagram Bot Manager (IGBM) is a open-source project that will allow you to manage your instagram bot using [MongoDB](https://www.mongodb.com/)[^1] and [Node.JS](https://nodejs.org/)[^2] using a website interface
 
 ## Features
 - 🧓 **User Friendly** : This program is user friendly providing you a detailed guide on how to set-up everything for your computer / server!
