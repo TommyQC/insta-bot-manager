@@ -15,7 +15,7 @@ Instagram Bot Manager (IGBM) is a open-source project that will allow you to man
 - **Cookie authentification**: This project uses cookie authentification, it allows users to stay logged for 3 hours (can be edited to your preferences). Changes made to the DB will not apply until the cookie is expired or user log out and log back in
 
 ## Set-up guide
-- *coming soon*
+- Check out my [installation guide](https://github.com/TommyQC/insta-bot-manager/blob/main/install.md)!
 
 
 
