@@ -6,6 +6,10 @@ Instagram Bot Manager (IGBM) is a open-source project that will allow you to man
 - 🎨🖼️ **Beautiful** : This project provides a beautiful user interface so it is pleasing to use (even in the console)
 - 🎈 **Simple** :  This project is simple to use, and simple to manage
 - ***and much more coming soon...***
+  
+### In-depth features (for nerds 🤓)
+- **Automatically generating/regenarating DB**: The database will automatically initialize for you, it will detect DB drops and automatically regenerate a basic DB for you so it never causes an issue
+- **Cookie authentification**: This project uses cookie authentification, it allows users to stay logged for 3 hours (can be edited to your preferences). Changes made to the DB will not apply until the cookie is expired or user log out and log back in
 
 ## Set-up guide
 - *coming soon*
